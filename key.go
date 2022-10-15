@@ -8,7 +8,7 @@ func (*baseKeySource[T]) Key() Key {
 	}
 }
 
-func (*baseKeySource[T]) Container(container map[interface{}]Binding) map[interface{}]Binding {
+func (*baseKeySource[T]) Container(container Container) Container {
 	return container
 }
 
@@ -20,7 +20,7 @@ func (*sliceKeySource[T]) Key() Key {
 	}
 }
 
-func (*sliceKeySource[T]) Container(container map[interface{}]Binding) map[interface{}]Binding {
+func (*sliceKeySource[T]) Container(container Container) Container {
 	return container
 }
 
@@ -32,7 +32,7 @@ func (*mapKeySource[K, T]) Key() Key {
 	}
 }
 
-func (*mapKeySource[K, T]) Container(container map[interface{}]Binding) map[interface{}]Binding {
+func (*mapKeySource[K, T]) Container(container Container) Container {
 	return container
 }
 
@@ -42,7 +42,7 @@ func (*sameKeyOption) Key(key Key) Key {
 	return key
 }
 
-func (*sameKeyOption) Container(container map[interface{}]Binding) map[interface{}]Binding {
+func (*sameKeyOption) Container(container Container) Container {
 	return container
 }
 
@@ -50,13 +50,14 @@ type annotatedKeyOption struct {
 	annotation string
 }
 
-func (o *annotatedKeyOption) Key(Key) Key {
+func (o *annotatedKeyOption) Key(key Key) Key {
 	return Key{
 		Annotation: o.annotation,
+		Value:      key.Value,
 	}
 }
 
-func (*annotatedKeyOption) Container(container map[interface{}]Binding) map[interface{}]Binding {
+func (*annotatedKeyOption) Container(container Container) Container {
 	return container
 }
 
@@ -67,18 +68,18 @@ func AnnotatedWith(annotation string) KeyOption {
 }
 
 type containerKeyOption struct {
-	container map[interface{}]Binding
+	container Container
 }
 
 func (*containerKeyOption) Key(key Key) Key {
 	return key
 }
 
-func (o *containerKeyOption) Container(map[interface{}]Binding) map[interface{}]Binding {
+func (o *containerKeyOption) Container(Container) Container {
 	return o.container
 }
 
-func WithContainer(container map[interface{}]Binding) KeyOption {
+func WithContainer(container Container) KeyOption {
 	return &containerKeyOption{
 		container: container,
 	}

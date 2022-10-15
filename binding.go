@@ -8,7 +8,11 @@ type bindingSource[T any] struct {
 }
 
 func (s *bindingSource[T]) Binding() (Binding, error) {
-	instance, _ := s.binding.Instance(false)
+	instance, err := s.binding.Instance(false)
+	if err != nil {
+		return nil, err
+	}
+
 	if _, ok := instance.(T); !ok {
 		var initial T
 		return nil, fmt.Errorf(`binding is not possible for "%v" and "%v"`, initial, instance)
@@ -20,23 +24,20 @@ func (s *bindingSource[T]) Key() Key {
 	return s.keySource.Key()
 }
 
-type Initializable interface {
-	Init()
-}
-
 type valueBinding[S any] struct{}
 
 func (*valueBinding[S]) Instance(initialize bool) (interface{}, error) {
-	var instance interface{} = *new(S)
+	initial := *new(S)
+	var instance interface{} = &initial
 	if !initialize {
-		return instance, nil
+		return initial, nil
 	}
 
-	if initializable, ok := instance.(Initializable); ok {
-		initializable.Init()
+	if value, ok := instance.(initializable); ok {
+		value.Init()
 	}
 
-	return instance, nil
+	return initial, nil
 }
 
 func AsValue[T any, S any]() BindingSource[T] {
@@ -44,6 +45,10 @@ func AsValue[T any, S any]() BindingSource[T] {
 		binding:   &valueBinding[S]{},
 		keySource: &baseKeySource[T]{},
 	}
+}
+
+type initializable interface {
+	Init()
 }
 
 type referenceBinding[R any] struct{}
@@ -54,8 +59,8 @@ func (*referenceBinding[R]) Instance(initialize bool) (interface{}, error) {
 		return instance, nil
 	}
 
-	if initializable, ok := instance.(Initializable); ok {
-		initializable.Init()
+	if value, ok := instance.(initializable); ok {
+		value.Init()
 	}
 
 	return instance, nil
@@ -111,7 +116,7 @@ func (b *bindingOption) Key(key Key) Key {
 	return b.keyOption.Key(key)
 }
 
-func (b *bindingOption) Container(container map[interface{}]Binding) map[interface{}]Binding {
+func (b *bindingOption) Container(container Container) Container {
 	return b.keyOption.Container(container)
 }
 
@@ -132,6 +137,7 @@ func (b *singletonBinding) Instance(initialize bool) (interface{}, error) {
 	}
 
 	b.initialized = true
+	b.singleton = instance
 	return instance, nil
 }
 

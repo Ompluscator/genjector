@@ -22,7 +22,7 @@ type KeySource interface {
 
 type KeyOption interface {
 	Key(key Key) Key
-	Container(container map[interface{}]Binding) map[interface{}]Binding
+	Container(container Container) Container
 }
 
 type Binding interface {
@@ -40,20 +40,22 @@ type FollowingBindingSource[T any] interface {
 
 type BindingOption interface {
 	Key(key Key) Key
-	Container(container map[interface{}]Binding) map[interface{}]Binding
+	Container(container Container) Container
 	Binding(binding Binding) (Binding, error)
 }
 
-var container = Container()
+type Container map[interface{}]Binding
 
-func Container() map[interface{}]Binding {
+var global = NewContainer()
+
+func NewContainer() Container {
 	return map[interface{}]Binding{}
 }
 
 func Bind[T any](source BindingSource[T], options ...BindingOption) error {
 	key := source.Key()
 
-	internal := container
+	internal := global
 	for _, option := range options {
 		key = option.Key(key)
 		internal = option.Container(internal)
@@ -97,7 +99,7 @@ func Initialize[T any](options ...KeyOption) (T, error) {
 
 	key := source.Key()
 
-	internal := container
+	internal := global
 	for _, option := range options {
 		key = option.Key(key)
 		internal = option.Container(internal)
@@ -133,5 +135,5 @@ func MustInitialize[T any](options ...KeyOption) T {
 }
 
 func Clean() {
-	container = Container()
+	global = NewContainer()
 }
