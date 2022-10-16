@@ -15,8 +15,8 @@ type AnnotationStruct struct {
 }
 
 func (s *AnnotationStruct) Init() {
-	firstChild := genjector.MustInitialize[*AnnotationChildStruct](genjector.AnnotatedWith("first"))
-	secondChild := genjector.MustInitialize[*AnnotationChildStruct](genjector.AnnotatedWith("second"))
+	firstChild := genjector.MustInitialize[*AnnotationChildStruct](genjector.WithAnnotation("first"))
+	secondChild := genjector.MustInitialize[*AnnotationChildStruct](genjector.WithAnnotation("second"))
 	s.value = fmt.Sprintf("%s | %s", firstChild.value, secondChild.value)
 }
 

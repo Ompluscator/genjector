@@ -3,7 +3,6 @@ language: go
 go:
   - 1.18
   - stable
-  - master
 
 script:
   - go test -v ./...

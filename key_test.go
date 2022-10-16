@@ -214,20 +214,6 @@ func Test_annotatedKeyOption_Container(t *testing.T) {
 	}
 }
 
-func TestAnnotatedWith(t *testing.T) {
-	result := AnnotatedWith("annotation")
-	if !reflect.DeepEqual(&annotatedKeyOption{
-		annotation: "annotation",
-	}, result) {
-		t.Error("annotatedKeyOption does not contain the right value")
-	}
-
-	result = AnnotatedWith("")
-	if !reflect.DeepEqual(new(annotatedKeyOption), result) {
-		t.Error("annotatedKeyOption does not contain the right value")
-	}
-}
-
 func Test_containerKeyOption_Key(t *testing.T) {
 	key := Key{
 		Value:      2,
