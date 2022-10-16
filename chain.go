@@ -37,7 +37,7 @@ func (b *sliceBinding[T]) Instance(initialize bool) (interface{}, error) {
 }
 
 type sliceBindingSource[T any] struct {
-	parent    Binding
+	previous  Binding
 	source    BindingSource[T]
 	keySource KeySource
 }
@@ -48,13 +48,17 @@ func (s *sliceBindingSource[T]) Binding() (Binding, error) {
 		return nil, err
 	}
 
-	instance, _ := binding.Instance(false)
+	instance, err := binding.Instance(false)
+	if err != nil {
+		return nil, err
+	}
+
 	if _, ok := instance.(T); !ok {
 		var initial T
 		return nil, fmt.Errorf(`binding is not possible for "%v" and "%v"`, initial, instance)
 	}
 
-	previous, ok := s.parent.(*sliceBinding[T])
+	previous, ok := s.previous.(*sliceBinding[T])
 	if !ok {
 		return &sliceBinding[T]{
 			current: binding,
@@ -68,7 +72,7 @@ func (s *sliceBindingSource[T]) Binding() (Binding, error) {
 }
 
 func (s *sliceBindingSource[T]) SetPrevious(binding Binding) {
-	s.parent = binding
+	s.previous = binding
 }
 
 func (s *sliceBindingSource[T]) Key() Key {
@@ -78,7 +82,7 @@ func (s *sliceBindingSource[T]) Key() Key {
 func InSlice[T any](source BindingSource[T]) BindingSource[T] {
 	return &sliceBindingSource[T]{
 		source:    source,
-		keySource: &sliceKeySource[T]{},
+		keySource: sliceKeySource[T]{},
 	}
 }
 
@@ -118,7 +122,7 @@ func (b *mapBinding[K, T]) Instance(initialize bool) (interface{}, error) {
 }
 
 type mapBindingSource[K comparable, T any] struct {
-	parent    Binding
+	previous  Binding
 	source    BindingSource[T]
 	key       K
 	keySource KeySource
@@ -136,7 +140,7 @@ func (s *mapBindingSource[K, T]) Binding() (Binding, error) {
 		return nil, fmt.Errorf(`binding is not possible for "%v" and "%v"`, initial, instance)
 	}
 
-	previous, ok := s.parent.(*mapBinding[K, T])
+	previous, ok := s.previous.(*mapBinding[K, T])
 	if !ok {
 		return &mapBinding[K, T]{
 			key:     s.key,
@@ -152,7 +156,7 @@ func (s *mapBindingSource[K, T]) Binding() (Binding, error) {
 }
 
 func (s *mapBindingSource[K, T]) SetPrevious(binding Binding) {
-	s.parent = binding
+	s.previous = binding
 }
 
 func (s *mapBindingSource[K, T]) Key() Key {
@@ -163,6 +167,6 @@ func InMap[K comparable, T any](key K, source BindingSource[T]) BindingSource[T]
 	return &mapBindingSource[K, T]{
 		key:       key,
 		source:    source,
-		keySource: &mapKeySource[K, T]{},
+		keySource: mapKeySource[K, T]{},
 	}
 }

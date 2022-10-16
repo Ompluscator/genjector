@@ -7,6 +7,7 @@ import (
 )
 
 type testBinding struct {
+	value    string
 	instance func(initialize bool) (interface{}, error)
 }
 
@@ -107,7 +108,7 @@ func Test_bindingSource_Binding_success(t *testing.T) {
 
 func Test_bindingSource_Key(t *testing.T) {
 	source := &bindingSource[int]{
-		keySource: &baseKeySource[int]{},
+		keySource: baseKeySource[int]{},
 	}
 
 	result := source.Key()
@@ -183,16 +184,16 @@ func Test_valueBinding_Instance_initialize(t *testing.T) {
 func TestAsValue(t *testing.T) {
 	result := AsValue[string, string]()
 	if !reflect.DeepEqual(result, &bindingSource[string]{
-		binding:   &valueBinding[string]{},
-		keySource: &baseKeySource[string]{},
+		binding:   valueBinding[string]{},
+		keySource: baseKeySource[string]{},
 	}) {
 		t.Error("binding sources are different")
 	}
 
 	result = AsValue[interface{}, testStruct]()
 	if !reflect.DeepEqual(result, &bindingSource[interface{}]{
-		binding:   &valueBinding[testStruct]{},
-		keySource: &baseKeySource[interface{}]{},
+		binding:   valueBinding[testStruct]{},
+		keySource: baseKeySource[interface{}]{},
 	}) {
 		t.Error("binding sources are different")
 	}
@@ -266,16 +267,16 @@ func Test_referenceBinding_Instance_initialize(t *testing.T) {
 func TestAsReference(t *testing.T) {
 	result := AsReference[*string, *string]()
 	if !reflect.DeepEqual(result, &bindingSource[*string]{
-		binding:   &referenceBinding[string]{},
-		keySource: &baseKeySource[*string]{},
+		binding:   referenceBinding[string]{},
+		keySource: baseKeySource[*string]{},
 	}) {
 		t.Error("binding sources are different")
 	}
 
 	result = AsReference[interface{}, *testStruct]()
 	if !reflect.DeepEqual(result, &bindingSource[interface{}]{
-		binding:   &referenceBinding[testStruct]{},
-		keySource: &baseKeySource[interface{}]{},
+		binding:   referenceBinding[testStruct]{},
+		keySource: baseKeySource[interface{}]{},
 	}) {
 		t.Error("binding sources are different")
 	}
@@ -396,7 +397,7 @@ func TestAsInstance(t *testing.T) {
 		binding: &instanceBinding[string]{
 			instance: "value",
 		},
-		keySource: &baseKeySource[string]{},
+		keySource: baseKeySource[string]{},
 	}) {
 		t.Error("binding sources are different")
 	}
@@ -410,7 +411,7 @@ func TestAsInstance(t *testing.T) {
 				a: "test",
 			},
 		},
-		keySource: &baseKeySource[interface{}]{},
+		keySource: baseKeySource[interface{}]{},
 	}) {
 		t.Error("binding sources are different")
 	}
@@ -527,7 +528,7 @@ func TestAsSingleton(t *testing.T) {
 	result.(*bindingOption).bindingFunc = nil
 
 	if !reflect.DeepEqual(result, &bindingOption{
-		keyOption: &sameKeyOption{},
+		keyOption: sameKeyOption{},
 	}) {
 		t.Error("binding options are different")
 	}

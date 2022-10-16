@@ -109,7 +109,11 @@ func Initialize[T any](options ...KeyOption) (T, error) {
 
 	binding, ok := internal[generated]
 	if !ok {
-		return empty, fmt.Errorf(`binding is not defined for key "%v"`, generated)
+		var err error
+		binding, err = getFallbackBinding[T]()
+		if err != nil {
+			return empty, err
+		}
 	}
 
 	instance, err := binding.Instance(true)
@@ -136,4 +140,22 @@ func MustInitialize[T any](options ...KeyOption) T {
 
 func Clean() {
 	global = NewContainer()
+}
+
+func getFallbackBinding[T any]() (Binding, error) {
+	var binding Binding
+	var err error
+
+	source := AsValue[T, T]()
+	binding, err = source.Binding()
+	if err == nil {
+		instance, err := binding.Instance(false)
+		if err == nil {
+			if _, ok := instance.(T); ok {
+				return binding, nil
+			}
+		}
+	}
+
+	return nil, err
 }

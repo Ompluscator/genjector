@@ -4,7 +4,7 @@ import "fmt"
 
 type bindingSource[T any] struct {
 	binding   Binding
-	keySource *baseKeySource[T]
+	keySource baseKeySource[T]
 }
 
 func (s *bindingSource[T]) Binding() (Binding, error) {
@@ -26,7 +26,7 @@ func (s *bindingSource[T]) Key() Key {
 
 type valueBinding[S any] struct{}
 
-func (*valueBinding[S]) Instance(initialize bool) (interface{}, error) {
+func (valueBinding[S]) Instance(initialize bool) (interface{}, error) {
 	initial := *new(S)
 	var instance interface{} = &initial
 	if !initialize {
@@ -42,8 +42,8 @@ func (*valueBinding[S]) Instance(initialize bool) (interface{}, error) {
 
 func AsValue[T any, S any]() BindingSource[T] {
 	return &bindingSource[T]{
-		binding:   &valueBinding[S]{},
-		keySource: &baseKeySource[T]{},
+		binding:   valueBinding[S]{},
+		keySource: baseKeySource[T]{},
 	}
 }
 
@@ -53,7 +53,7 @@ type initializable interface {
 
 type referenceBinding[R any] struct{}
 
-func (*referenceBinding[R]) Instance(initialize bool) (interface{}, error) {
+func (referenceBinding[R]) Instance(initialize bool) (interface{}, error) {
 	var instance interface{} = new(R)
 	if !initialize {
 		return instance, nil
@@ -68,8 +68,8 @@ func (*referenceBinding[R]) Instance(initialize bool) (interface{}, error) {
 
 func AsReference[T any, S *R, R any]() BindingSource[T] {
 	return &bindingSource[T]{
-		binding:   &referenceBinding[R]{},
-		keySource: &baseKeySource[T]{},
+		binding:   referenceBinding[R]{},
+		keySource: baseKeySource[T]{},
 	}
 }
 
@@ -82,7 +82,7 @@ func (b ProviderBinding[S]) Instance(bool) (interface{}, error) {
 func AsProvider[T any, S any](provider ProviderBinding[S]) BindingSource[T] {
 	return &bindingSource[T]{
 		binding:   provider,
-		keySource: &baseKeySource[T]{},
+		keySource: baseKeySource[T]{},
 	}
 }
 
@@ -99,7 +99,7 @@ func AsInstance[T any, S any](instance S) BindingSource[T] {
 		binding: &instanceBinding[S]{
 			instance: instance,
 		},
-		keySource: &baseKeySource[T]{},
+		keySource: baseKeySource[T]{},
 	}
 }
 
@@ -148,7 +148,7 @@ func AsSingleton() BindingOption {
 				parent: binding,
 			}, nil
 		},
-		keyOption: &sameKeyOption{},
+		keyOption: sameKeyOption{},
 	}
 }
 
