@@ -282,8 +282,8 @@ func TestAsReference(t *testing.T) {
 	}
 }
 
-func Test_ProviderBinding_Instance(t *testing.T) {
-	var stringBinding ProviderBinding[string] = func() (string, error) {
+func Test_ProviderMethod_Instance(t *testing.T) {
+	var stringBinding ProviderMethod[string] = func() (string, error) {
 		return "value", nil
 	}
 	result, err := stringBinding.Instance(true)
@@ -294,7 +294,7 @@ func Test_ProviderBinding_Instance(t *testing.T) {
 		t.Errorf(`expected reference to empty string, got: %v`, result)
 	}
 
-	var intBinding ProviderBinding[*int] = func() (*int, error) {
+	var intBinding ProviderMethod[*int] = func() (*int, error) {
 		value := 10
 		return &value, nil
 	}
@@ -307,7 +307,7 @@ func Test_ProviderBinding_Instance(t *testing.T) {
 		t.Errorf(`expected reference to 0, got: %v`, result)
 	}
 
-	var structBinding ProviderBinding[*testStruct] = func() (*testStruct, error) {
+	var structBinding ProviderMethod[*testStruct] = func() (*testStruct, error) {
 		return &testStruct{
 			a: "a",
 			b: 5,
@@ -543,5 +543,23 @@ func TestWithAnnotation(t *testing.T) {
 		},
 	}) {
 		t.Error("binding options are different")
+	}
+}
+
+func TestWithContainer(t *testing.T) {
+	result := WithContainer(Container{
+		"first": nil,
+	})
+	if !reflect.DeepEqual(&containerKeyOption{
+		container: Container{
+			"first": nil,
+		},
+	}, result.(*bindingOption).keyOption) {
+		t.Error("containerKeyOption does not contain the right value")
+	}
+
+	result = WithContainer(nil)
+	if !reflect.DeepEqual(new(containerKeyOption), result.(*bindingOption).keyOption) {
+		t.Error("containerKeyOption does not contain the right value")
 	}
 }

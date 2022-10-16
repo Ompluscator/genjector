@@ -73,13 +73,13 @@ func AsReference[T any, S *R, R any]() BindingSource[T] {
 	}
 }
 
-type ProviderBinding[S any] func() (S, error)
+type ProviderMethod[S any] func() (S, error)
 
-func (b ProviderBinding[S]) Instance(bool) (interface{}, error) {
+func (b ProviderMethod[S]) Instance(bool) (interface{}, error) {
 	return b()
 }
 
-func AsProvider[T any, S any](provider ProviderBinding[S]) BindingSource[T] {
+func AsProvider[T any, S any](provider ProviderMethod[S]) BindingSource[T] {
 	return &bindingSource[T]{
 		binding:   provider,
 		keySource: baseKeySource[T]{},
@@ -159,6 +159,17 @@ func WithAnnotation(annotation string) BindingOption {
 		},
 		keyOption: &annotatedKeyOption{
 			annotation: annotation,
+		},
+	}
+}
+
+func WithContainer(container Container) BindingOption {
+	return &bindingOption{
+		bindingFunc: func(binding Binding) (Binding, error) {
+			return binding, nil
+		},
+		keyOption: &containerKeyOption{
+			container: container,
 		},
 	}
 }

@@ -264,21 +264,3 @@ func Test_containerKeyOption_Container(t *testing.T) {
 		t.Error("containers are different")
 	}
 }
-
-func TestWithContainer(t *testing.T) {
-	result := WithContainer(Container{
-		"first": nil,
-	})
-	if !reflect.DeepEqual(&containerKeyOption{
-		container: Container{
-			"first": nil,
-		},
-	}, result) {
-		t.Error("containerKeyOption does not contain the right value")
-	}
-
-	result = WithContainer(nil)
-	if !reflect.DeepEqual(new(containerKeyOption), result) {
-		t.Error("containerKeyOption does not contain the right value")
-	}
-}

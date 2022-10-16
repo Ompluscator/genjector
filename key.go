@@ -78,9 +78,3 @@ func (*containerKeyOption) Key(key Key) Key {
 func (o *containerKeyOption) Container(Container) Container {
 	return o.container
 }
-
-func WithContainer(container Container) KeyOption {
-	return &containerKeyOption{
-		container: container,
-	}
-}
