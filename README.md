@@ -1,6 +1,8 @@
 # Package Genjector
 Reflection-free Run-Time Dependency Injection framework for Go 1.18+
 
+Read [blog](https://hindenbug.io/genjector-reflection-free-run-time-dependency-injection-framework-for-go-1-18-1022d134123d) for better examples!
+
 ## The Goal
 The purpose of The Genjector package is to provide a Dependency
 Injection framework without relying on reflection and depending solely
