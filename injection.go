@@ -40,7 +40,7 @@ type Binding interface {
 }
 
 // BindingSource represents an interface that delivers starting Key and
-// Binding instances, that later could be overriden by KeyOption or
+// Binding instances, that later could be overridden by KeyOption or
 // BindingOption.
 type BindingSource[T any] interface {
 	Key() Key
@@ -118,7 +118,7 @@ func Bind[T any](source BindingSource[T], options ...BindingOption) error {
 	return nil
 }
 
-// MustBind wraps Bind method, by making sure error is not returned as an arguement.
+// MustBind wraps Bind method, by making sure error is not returned as an argument.
 //
 // Still, in case of error, it panics.
 func MustBind[T any](source BindingSource[T], options ...BindingOption) {
@@ -175,7 +175,7 @@ func NewInstance[T any](options ...KeyOption) (T, error) {
 	return result, nil
 }
 
-// MustNewInstance wraps NewInstance method, by making sure error is not returned as an arguement.
+// MustNewInstance wraps NewInstance method, by making sure error is not returned as an argument.
 //
 // Still, in case of error, it panics.
 func MustNewInstance[T any](options ...KeyOption) T {

@@ -54,6 +54,9 @@ func TestAsProvider(t *testing.T) {
 				value: "value provided inside the ProviderMethod",
 			}, nil
 		}))
+		if err != nil {
+			t.Error("binding should not cause an error")
+		}
 
 		instance, err := genjector.NewInstance[*ProviderStruct]()
 		if err != nil {
