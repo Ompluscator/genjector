@@ -128,7 +128,7 @@ func Benchmark(b *testing.B) {
 		b.ResetTimer()
 
 		for i := 0; i < b.N; i++ {
-			variable = genjector.MustInitialize[BenchmarkInterface]()
+			variable = genjector.MustNewInstance[BenchmarkInterface]()
 		}
 
 		variable = &BenchmarkStruct{}

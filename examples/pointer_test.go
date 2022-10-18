@@ -30,7 +30,7 @@ func TestAsPointer(t *testing.T) {
 			t.Error("binding should not cause an error")
 		}
 
-		instance, err := genjector.Initialize[PointerInterface]()
+		instance, err := genjector.NewInstance[PointerInterface]()
 		if err != nil {
 			t.Error("initialization should not cause an error")
 		}
@@ -49,7 +49,7 @@ func TestAsPointer(t *testing.T) {
 			t.Error("binding should not cause an error")
 		}
 
-		instance, err := genjector.Initialize[*PointerStruct]()
+		instance, err := genjector.NewInstance[*PointerStruct]()
 		if err != nil {
 			t.Error("initialization should not cause an error")
 		}

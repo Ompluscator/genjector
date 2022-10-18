@@ -100,7 +100,7 @@ func (b *sliceBindingSource[T]) Key() Key {
 
 // InSlice delivers a BindingSource for a slice of types T.. It is used as a wrapping
 // BindingSource for any other inner. It creates complex Binding in the background
-// that stores all T types in a slice and delivers it upon request by executing Initialize
+// that stores all T types in a slice and delivers it upon request by executing NewInstance
 // method for a slice of T types.
 //
 // Example:
@@ -220,7 +220,7 @@ func (b *mapBindingSource[K, T]) Key() Key {
 // InMap delivers a BindingSource for a type T and key's type K, that creates a map
 // of K-T pairs. It is used as a wrapping BindingSource for any other inner. It creates
 // complex Binding in the background that stores all T types in a map and delivers it
-// upon request by executing Initialize method for a K-T map.
+// upon request by executing NewInstance method for a K-T map.
 //
 // Example:
 // err := :genjector.Bind(

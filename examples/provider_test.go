@@ -35,7 +35,7 @@ func TestAsProvider(t *testing.T) {
 			t.Error("binding should not cause an error")
 		}
 
-		instance, err := genjector.Initialize[ProviderInterface]()
+		instance, err := genjector.NewInstance[ProviderInterface]()
 		if err != nil {
 			t.Error("initialization should not cause an error")
 		}
@@ -55,7 +55,7 @@ func TestAsProvider(t *testing.T) {
 			}, nil
 		}))
 
-		instance, err := genjector.Initialize[*ProviderStruct]()
+		instance, err := genjector.NewInstance[*ProviderStruct]()
 		if err != nil {
 			t.Error("initialization should not cause an error")
 		}

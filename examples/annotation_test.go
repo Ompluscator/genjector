@@ -15,8 +15,8 @@ type AnnotationStruct struct {
 }
 
 func (s *AnnotationStruct) Init() {
-	firstChild := genjector.MustInitialize[*AnnotationChildStruct](genjector.WithAnnotation("first"))
-	secondChild := genjector.MustInitialize[*AnnotationChildStruct](genjector.WithAnnotation("second"))
+	firstChild := genjector.MustNewInstance[*AnnotationChildStruct](genjector.WithAnnotation("first"))
+	secondChild := genjector.MustNewInstance[*AnnotationChildStruct](genjector.WithAnnotation("second"))
 	s.value = fmt.Sprintf("%s | %s", firstChild.value, secondChild.value)
 }
 
@@ -59,7 +59,7 @@ func TestAsAnnotation(t *testing.T) {
 			t.Error("binding should not cause an error")
 		}
 
-		instance, err := genjector.Initialize[AnnotationInterface]()
+		instance, err := genjector.NewInstance[AnnotationInterface]()
 		if err != nil {
 			t.Error("initialization should not cause an error")
 		}

@@ -37,7 +37,7 @@ func TestAsSingleton(t *testing.T) {
 			t.Error("binding should not cause an error")
 		}
 
-		instance, err := genjector.Initialize[SingletonInterface]()
+		instance, err := genjector.NewInstance[SingletonInterface]()
 		if err != nil {
 			t.Error("initialization should not cause an error")
 		}
@@ -50,7 +50,7 @@ func TestAsSingleton(t *testing.T) {
 			t.Errorf(`unexpected counter received: "%d"`, counter)
 		}
 
-		instance, err = genjector.Initialize[SingletonInterface]()
+		instance, err = genjector.NewInstance[SingletonInterface]()
 		if err != nil {
 			t.Error("initialization should not cause an error")
 		}
@@ -73,7 +73,7 @@ func TestAsSingleton(t *testing.T) {
 			t.Error("binding should not cause an error")
 		}
 
-		instance, err := genjector.Initialize[SingletonInterface]()
+		instance, err := genjector.NewInstance[SingletonInterface]()
 		if err != nil {
 			t.Error("initialization should not cause an error")
 		}
@@ -86,7 +86,7 @@ func TestAsSingleton(t *testing.T) {
 			t.Errorf(`unexpected counter received: "%d"`, counter)
 		}
 
-		instance, err = genjector.Initialize[SingletonInterface]()
+		instance, err = genjector.NewInstance[SingletonInterface]()
 		if err != nil {
 			t.Error("initialization should not cause an error")
 		}

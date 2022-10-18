@@ -83,7 +83,7 @@ if err != nil {
   return err
 }
 
-instance, err := genjector.Initialize[ServiceInterface]()
+instance, err := genjector.NewInstance[ServiceInterface]()
 if err != nil {
   return err
 }
@@ -123,7 +123,7 @@ if err != nil {
   return err
 }
 
-instance, err := genjector.Initialize[ServiceInterface](
+instance, err := genjector.NewInstance[ServiceInterface](
   genjector.WithAnnotation("service"),
 )
 if err != nil {

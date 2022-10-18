@@ -128,7 +128,7 @@ func MustBind[T any](source BindingSource[T], options ...BindingOption) {
 	}
 }
 
-// Initialize executes complete logic for initializing value (or pointer) for
+// NewInstance executes complete logic for initializing value (or pointer) for
 // desired interface (or struct). By default, it uses Binding instance from default
 // inner Container. If such Binding can not be found, it tries to make its own
 // fallback Binding.
@@ -139,7 +139,7 @@ func MustBind[T any](source BindingSource[T], options ...BindingOption) {
 // it uses its own fallback Binding. Still, it works fully only for values, not pointers,
 // as for pointers it returns nil value. That means that pointer Binding
 // should be always defined.
-func Initialize[T any](options ...KeyOption) (T, error) {
+func NewInstance[T any](options ...KeyOption) (T, error) {
 	var empty T
 	source := &baseKeySource[T]{}
 
@@ -175,11 +175,11 @@ func Initialize[T any](options ...KeyOption) (T, error) {
 	return result, nil
 }
 
-// MustInitialize wraps Initialize method, by making sure error is not returned as an arguement.
+// MustNewInstance wraps NewInstance method, by making sure error is not returned as an arguement.
 //
 // Still, in case of error, it panics.
-func MustInitialize[T any](options ...KeyOption) T {
-	instance, err := Initialize[T](options...)
+func MustNewInstance[T any](options ...KeyOption) T {
+	instance, err := NewInstance[T](options...)
 	if err != nil {
 		panic(err)
 	}

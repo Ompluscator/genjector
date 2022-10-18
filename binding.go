@@ -113,7 +113,7 @@ func AsPointer[T any, S *R, R any]() BindingSource[T] {
 
 // ProviderMethod defines a type of a method that should delivers
 // an instance od type S. This method acts as an constructor method
-// and it is executed at the time of Initialize method.
+// and it is executed at the time of NewInstance method.
 //
 // It respects Binding interface.
 type ProviderMethod[S any] func() (S, error)
@@ -235,7 +235,7 @@ func (b *singletonBinding) Instance(initialize bool) (interface{}, error) {
 // AsSingleton delivers a BindingOption that defines the instance of desired
 // Binding as a singleton. That means only first time the Init method (or ProviderMethod)
 // will be called, and every next time the same instance will be delivered
-// as a result of Initialize method.
+// as a result of NewInstance method.
 //
 // Example:
 // err := genjector.Bind(
@@ -246,7 +246,7 @@ func (b *singletonBinding) Instance(initialize bool) (interface{}, error) {
 // )
 //
 // AsSingleton should be only used as a BindingOption for Bind method, as it
-// does not affect functionality if it is used in Initialize method.
+// does not affect functionality if it is used in NewInstance method.
 func AsSingleton() BindingOption {
 	return &bindingOption{
 		bindingFunc: func(binding Binding) (Binding, error) {
@@ -270,7 +270,7 @@ func AsSingleton() BindingOption {
 // )
 //
 // To properly use a customer Container, WithAnnotation should be used in both
-// Bind and Initialize methods.
+// Bind and NewInstance methods.
 func WithAnnotation(annotation string) BindingOption {
 	return &bindingOption{
 		bindingFunc: func(binding Binding) (Binding, error) {
@@ -295,7 +295,7 @@ func WithAnnotation(annotation string) BindingOption {
 // )
 //
 // To properly use a customer Container, WithContainer should be used in both
-// Bind and Initialize methods.
+// Bind and NewInstance methods.
 func WithContainer(container Container) BindingOption {
 	return &bindingOption{
 		bindingFunc: func(binding Binding) (Binding, error) {

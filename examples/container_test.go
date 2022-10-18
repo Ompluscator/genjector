@@ -35,7 +35,7 @@ func TestAsContainer(t *testing.T) {
 			t.Error("binding should not cause an error")
 		}
 
-		instance, err := genjector.Initialize[ContainerInterface]()
+		instance, err := genjector.NewInstance[ContainerInterface]()
 		if err == nil {
 			t.Error("expected an error, but got nil")
 		}
@@ -43,7 +43,7 @@ func TestAsContainer(t *testing.T) {
 			t.Errorf(`unexpected instance received: "%s"`, instance)
 		}
 
-		instance, err = genjector.Initialize[ContainerInterface](genjector.WithContainer(customContainer))
+		instance, err = genjector.NewInstance[ContainerInterface](genjector.WithContainer(customContainer))
 		if err != nil {
 			t.Error("initialization should not cause an error")
 		}

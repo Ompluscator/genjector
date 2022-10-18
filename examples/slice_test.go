@@ -52,7 +52,7 @@ func TestAsSlice(t *testing.T) {
 			t.Error("binding should not cause an error")
 		}
 
-		instance, err := genjector.Initialize[[]SliceInterface]()
+		instance, err := genjector.NewInstance[[]SliceInterface]()
 		if err != nil {
 			t.Error("initialization should not cause an error")
 		}

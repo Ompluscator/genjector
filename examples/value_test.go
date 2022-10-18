@@ -30,7 +30,7 @@ func TestAsValue(t *testing.T) {
 			t.Error("binding should not cause an error")
 		}
 
-		instance, err := genjector.Initialize[ValueInterface]()
+		instance, err := genjector.NewInstance[ValueInterface]()
 		if err != nil {
 			t.Error("initialization should not cause an error")
 		}
@@ -49,7 +49,7 @@ func TestAsValue(t *testing.T) {
 			t.Error("binding should not cause an error")
 		}
 
-		instance, err := genjector.Initialize[ValueStruct]()
+		instance, err := genjector.NewInstance[ValueStruct]()
 		if err != nil {
 			t.Error("initialization should not cause an error")
 		}

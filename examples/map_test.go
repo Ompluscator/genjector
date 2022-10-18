@@ -52,7 +52,7 @@ func TestAsMap(t *testing.T) {
 			t.Error("binding should not cause an error")
 		}
 
-		instance, err := genjector.Initialize[map[string]MapInterface]()
+		instance, err := genjector.NewInstance[map[string]MapInterface]()
 		if err != nil {
 			t.Error("initialization should not cause an error")
 		}

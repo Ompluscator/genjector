@@ -140,8 +140,8 @@ func TestMustBind(t *testing.T) {
 	})
 }
 
-func TestInitialize_defaultValue(t *testing.T) {
-	instance, err := Initialize[testStruct]()
+func TestNewInstance_defaultValue(t *testing.T) {
+	instance, err := NewInstance[testStruct]()
 	if err != nil {
 		t.Errorf("expected nil, got error %s", err)
 	}
@@ -154,8 +154,8 @@ func TestInitialize_defaultValue(t *testing.T) {
 	}
 }
 
-func TestInitialize_defaultPointer(t *testing.T) {
-	instance, err := Initialize[*testStruct]()
+func TestNewInstance_defaultPointer(t *testing.T) {
+	instance, err := NewInstance[*testStruct]()
 	if err != nil {
 		t.Errorf("expected nil, got error %s", err)
 	}
@@ -165,8 +165,8 @@ func TestInitialize_defaultPointer(t *testing.T) {
 	}
 }
 
-func TestInitialize_defaultError(t *testing.T) {
-	instance, err := Initialize[interface{}]()
+func TestNewInstance_defaultError(t *testing.T) {
+	instance, err := NewInstance[interface{}]()
 	if err == nil {
 		t.Error("expected error, got nil")
 	}
@@ -176,7 +176,7 @@ func TestInitialize_defaultError(t *testing.T) {
 	}
 }
 
-func TestInitialize_success(t *testing.T) {
+func TestNewInstance_success(t *testing.T) {
 	inner := Container{
 		(*int)(nil): &testBinding{
 			instance: func(initialize bool) (interface{}, error) {
@@ -185,7 +185,7 @@ func TestInitialize_success(t *testing.T) {
 		},
 	}
 
-	instance, err := Initialize[int](WithContainer(inner))
+	instance, err := NewInstance[int](WithContainer(inner))
 	if err == nil {
 		t.Error("expected error, got nil")
 	}
@@ -195,7 +195,7 @@ func TestInitialize_success(t *testing.T) {
 	}
 }
 
-func TestInitialize_invalid(t *testing.T) {
+func TestNewInstance_invalid(t *testing.T) {
 	inner := Container{
 		(*int)(nil): &testBinding{
 			instance: func(initialize bool) (interface{}, error) {
@@ -204,7 +204,7 @@ func TestInitialize_invalid(t *testing.T) {
 		},
 	}
 
-	instance, err := Initialize[int](WithContainer(inner))
+	instance, err := NewInstance[int](WithContainer(inner))
 	if err == nil {
 		t.Error("expected error, got nil")
 	}
@@ -214,7 +214,7 @@ func TestInitialize_invalid(t *testing.T) {
 	}
 }
 
-func TestInitialize_simple_success(t *testing.T) {
+func TestNewInstance_simple_success(t *testing.T) {
 	inner := Container{
 		(*int)(nil): &testBinding{
 			instance: func(initialize bool) (interface{}, error) {
@@ -223,7 +223,7 @@ func TestInitialize_simple_success(t *testing.T) {
 		},
 	}
 
-	instance, err := Initialize[int](WithContainer(inner))
+	instance, err := NewInstance[int](WithContainer(inner))
 	if err != nil {
 		t.Errorf("expected nil, got error %s", err)
 	}
@@ -233,7 +233,7 @@ func TestInitialize_simple_success(t *testing.T) {
 	}
 }
 
-func TestInitialize_complex_success(t *testing.T) {
+func TestNewInstance_complex_success(t *testing.T) {
 	inner := Container{
 		[2]interface{}{"annotation", nil}: &testBinding{
 			instance: func(initialize bool) (interface{}, error) {
@@ -242,7 +242,7 @@ func TestInitialize_complex_success(t *testing.T) {
 		},
 	}
 
-	instance, err := Initialize[int](&testKeyOption{
+	instance, err := NewInstance[int](&testKeyOption{
 		key: func(key Key) Key {
 			return Key{
 				Annotation: "annotation",
