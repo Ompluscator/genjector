@@ -1,4 +1,6 @@
 [![Go Reference](https://pkg.go.dev/badge/github.com/Ompluscator/genjector.svg)](https://pkg.go.dev/github.com/Ompluscator/genjector)
+![Coverage](https://img.shields.io/badge/Coverage-97.8%25-brightgreen)
+[![Go Report Card](https://goreportcard.com/badge/github.com/ompluscator/genjector)](https://goreportcard.com/report/github.com/ompluscator/genjector)
 
 # Package Genjector
 Reflection-free Run-Time Dependency Injection framework for Go 1.18+
