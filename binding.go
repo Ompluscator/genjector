@@ -33,7 +33,7 @@ func (s *bindingSource[T]) Key() Key {
 }
 
 // Initializable represents any struct that contains a method Init.
-// When such struct as defined AsReference or AsValue, method Init will be
+// When such struct as defined AsPointer or AsValue, method Init will be
 // called during initialization process.
 type Initializable interface {
 	Init()
@@ -43,7 +43,7 @@ type Initializable interface {
 type valueBinding[S any] struct{}
 
 // Instance delivers the value of the concrete instance of type S.
-// If the reference to the struct respects Initializable interface,
+// If the pointer to the struct respects Initializable interface,
 // Init method will be called.
 //
 // It respects Binding interface.
@@ -63,7 +63,7 @@ func (valueBinding[S]) Instance(initialize bool) (interface{}, error) {
 
 // AsValue delivers a BindingSource for a type T, by binding a value of a struct
 // to the concrete interface (or the struct itself). It must be only used with value and
-// not reference. In case reference is used, code will return a nil value for the instance.
+// not pointer. In case pointer is used, code will return a nil value for the instance.
 //
 // Example:
 // err := genjector.Bind(genjector.AsValue[ValueInterface, ValueStruct]())
@@ -76,14 +76,14 @@ func AsValue[T any, S any]() BindingSource[T] {
 	}
 }
 
-// referenceBinding is a concrete implementation for Binding interface.
-type referenceBinding[R any] struct{}
+// pointerBinding is a concrete implementation for Binding interface.
+type pointerBinding[R any] struct{}
 
-// Instance delivers the reference of the concrete instance of type S.
+// Instance delivers the pointer of the concrete instance of type S.
 // If the struct respects Initializable interface, Init method will be called.
 //
 // It respects Binding interface.
-func (referenceBinding[R]) Instance(initialize bool) (interface{}, error) {
+func (pointerBinding[R]) Instance(initialize bool) (interface{}, error) {
 	var instance interface{} = new(R)
 	if !initialize {
 		return instance, nil
@@ -96,17 +96,17 @@ func (referenceBinding[R]) Instance(initialize bool) (interface{}, error) {
 	return instance, nil
 }
 
-// AsReference delivers a BindingSource for a type T, by binding reference of a struct
-// to the concrete interface (or the struct itself). It must be only used with references and
+// AsPointer delivers a BindingSource for a type T, by binding pointer of a struct
+// to the concrete interface (or the struct itself). It must be only used with pointers and
 // not values. In case values is used, code will panic.
 //
 // Example:
-// err := genjector.Bind(genjector.AsReference[ReferenceInterface, *ReferenceStruct]())
+// err := genjector.Bind(genjector.AsPointer[PointerInterface, *PointerStruct]())
 //
 // BindingSource can be only used as the first argument to Bind method.
-func AsReference[T any, S *R, R any]() BindingSource[T] {
+func AsPointer[T any, S *R, R any]() BindingSource[T] {
 	return &bindingSource[T]{
-		binding:   referenceBinding[R]{},
+		binding:   pointerBinding[R]{},
 		keySource: baseKeySource[T]{},
 	}
 }
@@ -240,7 +240,7 @@ func (b *singletonBinding) Instance(initialize bool) (interface{}, error) {
 // Example:
 // err := genjector.Bind(
 //
-//	genjector.AsReference[SingletonInterface, *SingletonStruct](),
+//	genjector.AsPointer[SingletonInterface, *SingletonStruct](),
 //	genjector.AsSingleton(),
 //
 // )
@@ -264,7 +264,7 @@ func AsSingleton() BindingOption {
 // Example:
 // err = genjector.Bind(
 //
-//	genjector.AsReference[AnnotationInterface, *AnnotationStruct](),
+//	genjector.AsPointer[AnnotationInterface, *AnnotationStruct](),
 //	genjector.WithAnnotation("first"),
 //
 // )
@@ -289,7 +289,7 @@ func WithAnnotation(annotation string) BindingOption {
 // Example:
 // err := genjector.Bind(
 //
-//	genjector.AsReference[ContainerInterface, *ContainerStruct](),
+//	genjector.AsPointer[ContainerInterface, *ContainerStruct](),
 //	genjector.WithContainer(customContainer),
 //
 // )

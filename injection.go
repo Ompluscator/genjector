@@ -73,7 +73,7 @@ func NewContainer() Container {
 	return map[interface{}]Binding{}
 }
 
-// Bind executes complete logic for binding particular value (or reference) to
+// Bind executes complete logic for binding particular value (or pointer) to
 // desired interface (or struct). By default, it stores all Binding instances
 // into default inner Container.
 //
@@ -81,8 +81,8 @@ func NewContainer() Container {
 // instances of BindingOption are optional.
 //
 // At this point, if Binding for particular interface (or struct) is not defined,
-// it uses its own fallback Binding. Still, it works fully only for values, not references,
-// as for references it returns nil value. That means that reference Binding
+// it uses its own fallback Binding. Still, it works fully only for values, not pointers,
+// as for pointers it returns nil value. That means that pointer Binding
 // should be always defined.
 func Bind[T any](source BindingSource[T], options ...BindingOption) error {
 	key := source.Key()
@@ -128,7 +128,7 @@ func MustBind[T any](source BindingSource[T], options ...BindingOption) {
 	}
 }
 
-// Initialize executes complete logic for initializing value (or reference) for
+// Initialize executes complete logic for initializing value (or pointer) for
 // desired interface (or struct). By default, it uses Binding instance from default
 // inner Container. If such Binding can not be found, it tries to make its own
 // fallback Binding.
@@ -136,8 +136,8 @@ func MustBind[T any](source BindingSource[T], options ...BindingOption) {
 // All instances of BindingOption are optional.
 //
 // At this point, if Binding for particular interface (or struct) is not defined,
-// it uses its own fallback Binding. Still, it works fully only for values, not references,
-// as for references it returns nil value. That means that reference Binding
+// it uses its own fallback Binding. Still, it works fully only for values, not pointers,
+// as for pointers it returns nil value. That means that pointer Binding
 // should be always defined.
 func Initialize[T any](options ...KeyOption) (T, error) {
 	var empty T

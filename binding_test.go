@@ -199,59 +199,59 @@ func TestAsValue(t *testing.T) {
 	}
 }
 
-func Test_referenceBinding_Instance_noInitialize(t *testing.T) {
-	stringBinding := &referenceBinding[string]{}
+func Test_pointerBinding_Instance_noInitialize(t *testing.T) {
+	stringBinding := &pointerBinding[string]{}
 	result, err := stringBinding.Instance(false)
 	if err != nil {
 		t.Errorf(`expected nil, got: %v`, err)
 	}
 	stringActual := result.(*string)
 	if *stringActual != "" {
-		t.Errorf(`expected reference to empty string, got: %v`, result)
+		t.Errorf(`expected pointer to empty string, got: %v`, result)
 	}
 
-	intBinding := &referenceBinding[int]{}
+	intBinding := &pointerBinding[int]{}
 	result, err = intBinding.Instance(false)
 	if err != nil {
 		t.Errorf(`expected nil, got: %v`, err)
 	}
 	intActual := result.(*int)
 	if *intActual != 0 {
-		t.Errorf(`expected reference to 0, got: %v`, result)
+		t.Errorf(`expected pointer to 0, got: %v`, result)
 	}
 
-	structBinding := &referenceBinding[testStruct]{}
+	structBinding := &pointerBinding[testStruct]{}
 	result, err = structBinding.Instance(false)
 	if err != nil {
 		t.Errorf(`expected nil, got: %v`, err)
 	}
 	if !reflect.DeepEqual(result, &testStruct{}) {
-		t.Errorf(`expected reference to empty struct, got: %v`, result)
+		t.Errorf(`expected pointer to empty struct, got: %v`, result)
 	}
 }
 
-func Test_referenceBinding_Instance_initialize(t *testing.T) {
-	stringBinding := &referenceBinding[string]{}
+func Test_pointerBinding_Instance_initialize(t *testing.T) {
+	stringBinding := &pointerBinding[string]{}
 	result, err := stringBinding.Instance(true)
 	if err != nil {
 		t.Errorf(`expected nil, got: %v`, err)
 	}
 	stringActual := result.(*string)
 	if *stringActual != "" {
-		t.Errorf(`expected reference to empty string, got: %v`, result)
+		t.Errorf(`expected pointer to empty string, got: %v`, result)
 	}
 
-	intBinding := &referenceBinding[int]{}
+	intBinding := &pointerBinding[int]{}
 	result, err = intBinding.Instance(true)
 	if err != nil {
 		t.Errorf(`expected nil, got: %v`, err)
 	}
 	intActual := result.(*int)
 	if *intActual != 0 {
-		t.Errorf(`expected reference to 0, got: %v`, result)
+		t.Errorf(`expected pointer to 0, got: %v`, result)
 	}
 
-	structBinding := &referenceBinding[testStruct]{}
+	structBinding := &pointerBinding[testStruct]{}
 	result, err = structBinding.Instance(true)
 	if err != nil {
 		t.Errorf(`expected nil, got: %v`, err)
@@ -260,22 +260,22 @@ func Test_referenceBinding_Instance_initialize(t *testing.T) {
 		a: "test",
 		b: 10,
 	}) {
-		t.Errorf(`expected reference to empty struct, got: %v`, result)
+		t.Errorf(`expected pointer to empty struct, got: %v`, result)
 	}
 }
 
-func TestAsReference(t *testing.T) {
-	result := AsReference[*string, *string]()
+func TestAsPointer(t *testing.T) {
+	result := AsPointer[*string, *string]()
 	if !reflect.DeepEqual(result, &bindingSource[*string]{
-		binding:   referenceBinding[string]{},
+		binding:   pointerBinding[string]{},
 		keySource: baseKeySource[*string]{},
 	}) {
 		t.Error("binding sources are different")
 	}
 
-	result = AsReference[interface{}, *testStruct]()
+	result = AsPointer[interface{}, *testStruct]()
 	if !reflect.DeepEqual(result, &bindingSource[interface{}]{
-		binding:   referenceBinding[testStruct]{},
+		binding:   pointerBinding[testStruct]{},
 		keySource: baseKeySource[interface{}]{},
 	}) {
 		t.Error("binding sources are different")
@@ -291,7 +291,7 @@ func Test_ProviderMethod_Instance(t *testing.T) {
 		t.Errorf(`expected nil, got: %v`, err)
 	}
 	if result != "value" {
-		t.Errorf(`expected reference to empty string, got: %v`, result)
+		t.Errorf(`expected pointer to empty string, got: %v`, result)
 	}
 
 	var intBinding ProviderMethod[*int] = func() (*int, error) {
@@ -304,7 +304,7 @@ func Test_ProviderMethod_Instance(t *testing.T) {
 	}
 	intActual := result.(*int)
 	if *intActual != 10 {
-		t.Errorf(`expected reference to 0, got: %v`, result)
+		t.Errorf(`expected pointer to 0, got: %v`, result)
 	}
 
 	var structBinding ProviderMethod[*testStruct] = func() (*testStruct, error) {
@@ -321,7 +321,7 @@ func Test_ProviderMethod_Instance(t *testing.T) {
 		a: "a",
 		b: 5,
 	}) {
-		t.Errorf(`expected reference to empty struct, got: %v`, result)
+		t.Errorf(`expected pointer to empty struct, got: %v`, result)
 	}
 }
 
@@ -359,7 +359,7 @@ func Test_instanceBinding_Instance(t *testing.T) {
 		t.Errorf(`expected nil, got: %v`, err)
 	}
 	if result != "value" {
-		t.Errorf(`expected reference to empty string, got: %v`, result)
+		t.Errorf(`expected pointer to empty string, got: %v`, result)
 	}
 
 	intBinding := &instanceBinding[int]{
@@ -370,7 +370,7 @@ func Test_instanceBinding_Instance(t *testing.T) {
 		t.Errorf(`expected nil, got: %v`, err)
 	}
 	if result != 10 {
-		t.Errorf(`expected reference to 0, got: %v`, result)
+		t.Errorf(`expected pointer to 0, got: %v`, result)
 	}
 
 	structBinding := &instanceBinding[*testStruct]{
@@ -387,7 +387,7 @@ func Test_instanceBinding_Instance(t *testing.T) {
 		a: "a",
 		b: 5,
 	}) {
-		t.Errorf(`expected reference to empty struct, got: %v`, result)
+		t.Errorf(`expected pointer to empty struct, got: %v`, result)
 	}
 }
 
@@ -484,7 +484,7 @@ func Test_singletonBinding_Instance(t *testing.T) {
 		},
 	}
 
-	binding, err := option.Binding(&referenceBinding[testSingletonStruct]{})
+	binding, err := option.Binding(&pointerBinding[testSingletonStruct]{})
 	if err != nil {
 		t.Error("unexpected error")
 	}

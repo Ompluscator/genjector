@@ -22,11 +22,11 @@ func (s *SliceStruct) String() string {
 }
 
 func TestAsSlice(t *testing.T) {
-	t.Run("Bind multiple references to a struct as an implementations for an interface", func(t *testing.T) {
+	t.Run("Bind multiple pointers to a struct as an implementations for an interface", func(t *testing.T) {
 		genjector.Clean()
 
 		err := genjector.Bind(
-			genjector.InSlice(genjector.AsReference[SliceInterface, *SliceStruct]()),
+			genjector.InSlice(genjector.AsPointer[SliceInterface, *SliceStruct]()),
 		)
 		if err != nil {
 			t.Error("binding should not cause an error")

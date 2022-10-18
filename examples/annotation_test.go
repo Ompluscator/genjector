@@ -36,7 +36,7 @@ func TestAsAnnotation(t *testing.T) {
 	t.Run("Take values from inner 2 child objects defined with proper annotation", func(t *testing.T) {
 		genjector.Clean()
 
-		err := genjector.Bind(genjector.AsReference[AnnotationInterface, *AnnotationStruct]())
+		err := genjector.Bind(genjector.AsPointer[AnnotationInterface, *AnnotationStruct]())
 		if err != nil {
 			t.Error("binding should not cause an error")
 		}

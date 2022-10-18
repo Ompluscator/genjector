@@ -22,11 +22,11 @@ func (s *MapStruct) String() string {
 }
 
 func TestAsMap(t *testing.T) {
-	t.Run("Bind multiple references to a struct as an implementations for an interface", func(t *testing.T) {
+	t.Run("Bind multiple pointers to a struct as an implementations for an interface", func(t *testing.T) {
 		genjector.Clean()
 
 		err := genjector.Bind(
-			genjector.InMap("first", genjector.AsReference[MapInterface, *MapStruct]()),
+			genjector.InMap("first", genjector.AsPointer[MapInterface, *MapStruct]()),
 		)
 		if err != nil {
 			t.Error("binding should not cause an error")

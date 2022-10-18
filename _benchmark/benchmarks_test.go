@@ -6,7 +6,6 @@ import (
 	"github.com/go-kata/kinit/kinitx"
 	"github.com/goava/di"
 	di2 "github.com/goioc/di"
-	"github.com/golobby/container/v3"
 	"github.com/ompluscator/genjector"
 	"github.com/samber/do"
 	"github.com/vardius/gocontainer"
@@ -125,7 +124,7 @@ func Benchmark(b *testing.B) {
 	b.Run("github.com/ompluscator/genjector", func(b *testing.B) {
 		var variable BenchmarkInterface
 
-		genjector.MustBind(genjector.AsReference[BenchmarkInterface, *BenchmarkStruct]())
+		genjector.MustBind(genjector.AsPointer[BenchmarkInterface, *BenchmarkStruct]())
 		b.ResetTimer()
 
 		for i := 0; i < b.N; i++ {

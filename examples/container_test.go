@@ -28,7 +28,7 @@ func TestAsContainer(t *testing.T) {
 		customContainer := genjector.NewContainer()
 
 		err := genjector.Bind(
-			genjector.AsReference[ContainerInterface, *ContainerStruct](),
+			genjector.AsPointer[ContainerInterface, *ContainerStruct](),
 			genjector.WithContainer(customContainer),
 		)
 		if err != nil {

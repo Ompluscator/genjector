@@ -10,7 +10,7 @@ on Go Generics (provided from Go version 1.18).
 
 It supports many different features:
 + Binding concrete implementations to particular interfaces.
-+ Binding implementations as references or values.
++ Binding implementations as pointers or values.
 + Binding implementations with Provider methods.
 + Binding implementations with concrete instances.
 + Define Binding as singletons.
@@ -58,7 +58,7 @@ Detailed examples can be found inside inner "examples" package.
 
 Some simple code blocks can be found bellow.
 
-### Simple Reference
+### Simple Pointer
 ```go
 package example
 
@@ -78,7 +78,7 @@ func (s *Service) String() string {
   return s.value
 }
 
-err := genjector.Bind(genjector.AsReference[ServiceInterface, *Service]())
+err := genjector.Bind(genjector.AsPointer[ServiceInterface, *Service]())
 if err != nil {
   return err
 }
@@ -94,7 +94,7 @@ if value != "value provided inside the Service" {
 }
 ```
 
-### Complex Reference
+### Complex Pointer
 ```go
 package example
 
@@ -115,7 +115,7 @@ func (s *Service) String() string {
 }
 
 err := genjector.Bind(
-  genjector.AsReference[ServiceInterface, *Service](),
+  genjector.AsPointer[ServiceInterface, *Service](),
   genjector.AsSingleton(),
   genjector.WithAnnotation("service")
 )

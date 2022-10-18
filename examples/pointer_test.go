@@ -1,45 +1,42 @@
 package examples
 
 import (
-	"testing"
-
 	"github.com/ompluscator/genjector"
+	"testing"
 )
 
-type InstanceInterface interface {
+type PointerInterface interface {
 	String() string
 }
 
-type InstanceStruct struct {
+type PointerStruct struct {
 	value string
 }
 
-func (s *InstanceStruct) Init() {
-	s.value = "value provided inside the InstanceStruct"
+func (s *PointerStruct) Init() {
+	s.value = "value provided inside the PointerStruct"
 }
 
-func (s *InstanceStruct) String() string {
+func (s *PointerStruct) String() string {
 	return s.value
 }
 
-func TestAsInstance(t *testing.T) {
+func TestAsPointer(t *testing.T) {
 	t.Run("Bind a pointer to a struct as an implementation for an interface", func(t *testing.T) {
 		genjector.Clean()
 
-		err := genjector.Bind(genjector.AsInstance[InstanceInterface](&InstanceStruct{
-			value: "value provided inside the Test method",
-		}))
+		err := genjector.Bind(genjector.AsPointer[PointerInterface, *PointerStruct]())
 		if err != nil {
 			t.Error("binding should not cause an error")
 		}
 
-		instance, err := genjector.Initialize[InstanceInterface]()
+		instance, err := genjector.Initialize[PointerInterface]()
 		if err != nil {
 			t.Error("initialization should not cause an error")
 		}
 
 		value := instance.String()
-		if value != "value provided inside the Test method" {
+		if value != "value provided inside the PointerStruct" {
 			t.Errorf(`unexpected value received: "%s"`, value)
 		}
 	})
@@ -47,20 +44,18 @@ func TestAsInstance(t *testing.T) {
 	t.Run("Bind a pointer to a struct as an implementation for the pointer of that struct", func(t *testing.T) {
 		genjector.Clean()
 
-		err := genjector.Bind(genjector.AsInstance[*InstanceStruct](&InstanceStruct{
-			value: "value provided inside the Test method",
-		}))
+		err := genjector.Bind(genjector.AsPointer[*PointerStruct, *PointerStruct]())
 		if err != nil {
 			t.Error("binding should not cause an error")
 		}
 
-		instance, err := genjector.Initialize[*InstanceStruct]()
+		instance, err := genjector.Initialize[*PointerStruct]()
 		if err != nil {
 			t.Error("initialization should not cause an error")
 		}
 
 		value := instance.String()
-		if value != "value provided inside the Test method" {
+		if value != "value provided inside the PointerStruct" {
 			t.Errorf(`unexpected value received: "%s"`, value)
 		}
 	})

@@ -30,7 +30,7 @@ func TestAsSingleton(t *testing.T) {
 		counter = 0
 
 		err := genjector.Bind(
-			genjector.AsReference[SingletonInterface, *SingletonStruct](),
+			genjector.AsPointer[SingletonInterface, *SingletonStruct](),
 			genjector.AsSingleton(),
 		)
 		if err != nil {
@@ -68,7 +68,7 @@ func TestAsSingleton(t *testing.T) {
 		genjector.Clean()
 		counter = 0
 
-		err := genjector.Bind(genjector.AsReference[SingletonInterface, *SingletonStruct]())
+		err := genjector.Bind(genjector.AsPointer[SingletonInterface, *SingletonStruct]())
 		if err != nil {
 			t.Error("binding should not cause an error")
 		}

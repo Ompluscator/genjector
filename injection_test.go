@@ -154,7 +154,7 @@ func TestInitialize_defaultValue(t *testing.T) {
 	}
 }
 
-func TestInitialize_defaultReference(t *testing.T) {
+func TestInitialize_defaultPointer(t *testing.T) {
 	instance, err := Initialize[*testStruct]()
 	if err != nil {
 		t.Errorf("expected nil, got error %s", err)
