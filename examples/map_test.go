@@ -1,8 +1,9 @@
 package examples
 
 import (
-	"github.com/ompluscator/genjector"
 	"testing"
+
+	"github.com/ompluscator/genjector"
 )
 
 type MapInterface interface {
@@ -25,15 +26,15 @@ func TestAsMap(t *testing.T) {
 	t.Run("Bind multiple pointers to a struct as an implementations for an interface", func(t *testing.T) {
 		genjector.Clean()
 
-		err := genjector.Bind(
-			genjector.InMap("first", genjector.AsPointer[MapInterface, *MapStruct]()),
+		err := genjector.Bind[MapInterface](
+			genjector.InMap[string, MapInterface]("first", genjector.AsPointer[MapInterface, *MapStruct]()),
 		)
 		if err != nil {
 			t.Error("binding should not cause an error")
 		}
 
-		err = genjector.Bind(
-			genjector.InMap("second", genjector.AsProvider[MapInterface](func() (*MapStruct, error) {
+		err = genjector.Bind[MapInterface](
+			genjector.InMap[string, MapInterface]("second", genjector.AsProvider[MapInterface](func() (*MapStruct, error) {
 				return &MapStruct{
 					value: "value provided inside the ProviderMethod",
 				}, nil
@@ -43,8 +44,8 @@ func TestAsMap(t *testing.T) {
 			t.Error("binding should not cause an error")
 		}
 
-		err = genjector.Bind(
-			genjector.InMap("third", genjector.AsInstance[MapInterface](&MapStruct{
+		err = genjector.Bind[MapInterface](
+			genjector.InMap[string, MapInterface]("third", genjector.AsInstance[MapInterface](&MapStruct{
 				value: "value provided inside the Test method",
 			})),
 		)

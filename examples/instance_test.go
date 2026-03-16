@@ -26,7 +26,7 @@ func TestAsInstance(t *testing.T) {
 	t.Run("Bind a pointer to a struct as an implementation for an interface", func(t *testing.T) {
 		genjector.Clean()
 
-		err := genjector.Bind(genjector.AsInstance[InstanceInterface](&InstanceStruct{
+		err := genjector.Bind[InstanceInterface](genjector.AsInstance[InstanceInterface](&InstanceStruct{
 			value: "value provided inside the Test method",
 		}))
 		if err != nil {
@@ -47,7 +47,7 @@ func TestAsInstance(t *testing.T) {
 	t.Run("Bind a pointer to a struct as an implementation for the pointer of that struct", func(t *testing.T) {
 		genjector.Clean()
 
-		err := genjector.Bind(genjector.AsInstance[*InstanceStruct](&InstanceStruct{
+		err := genjector.Bind[InstanceStruct](genjector.AsInstance[*InstanceStruct](&InstanceStruct{
 			value: "value provided inside the Test method",
 		}))
 		if err != nil {

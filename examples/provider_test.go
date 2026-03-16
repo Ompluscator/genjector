@@ -26,7 +26,7 @@ func TestAsProvider(t *testing.T) {
 	t.Run("Bind a ProviderMethod for a struct as an implementation for an interface", func(t *testing.T) {
 		genjector.Clean()
 
-		err := genjector.Bind(genjector.AsProvider[ProviderInterface](func() (*ProviderStruct, error) {
+		err := genjector.Bind[PointerInterface](genjector.AsProvider[ProviderInterface](func() (*ProviderStruct, error) {
 			return &ProviderStruct{
 				value: "value provided inside the ProviderMethod",
 			}, nil
@@ -49,7 +49,7 @@ func TestAsProvider(t *testing.T) {
 	t.Run("Bind a ProviderMethod for a struct as an implementation for that struct", func(t *testing.T) {
 		genjector.Clean()
 
-		err := genjector.Bind(genjector.AsProvider[*ProviderStruct](func() (*ProviderStruct, error) {
+		err := genjector.Bind[PointerStruct](genjector.AsProvider[*ProviderStruct](func() (*ProviderStruct, error) {
 			return &ProviderStruct{
 				value: "value provided inside the ProviderMethod",
 			}, nil

@@ -1,3 +1,3 @@
 module github.com/ompluscator/genjector
 
-go 1.18
+go 1.26

@@ -1,8 +1,9 @@
 package examples
 
 import (
-	"github.com/ompluscator/genjector"
 	"testing"
+
+	"github.com/ompluscator/genjector"
 )
 
 type ContainerInterface interface {
@@ -27,7 +28,7 @@ func TestAsContainer(t *testing.T) {
 
 		customContainer := genjector.NewContainer()
 
-		err := genjector.Bind(
+		err := genjector.Bind[ContainerInterface](
 			genjector.AsPointer[ContainerInterface, *ContainerStruct](),
 			genjector.WithContainer(customContainer),
 		)

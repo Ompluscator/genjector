@@ -1,8 +1,9 @@
 package examples
 
 import (
-	"github.com/ompluscator/genjector"
 	"testing"
+
+	"github.com/ompluscator/genjector"
 )
 
 var counter = 0
@@ -29,7 +30,7 @@ func TestAsSingleton(t *testing.T) {
 		genjector.Clean()
 		counter = 0
 
-		err := genjector.Bind(
+		err := genjector.Bind[SingletonInterface](
 			genjector.AsPointer[SingletonInterface, *SingletonStruct](),
 			genjector.AsSingleton(),
 		)
@@ -68,7 +69,7 @@ func TestAsSingleton(t *testing.T) {
 		genjector.Clean()
 		counter = 0
 
-		err := genjector.Bind(genjector.AsPointer[SingletonInterface, *SingletonStruct]())
+		err := genjector.Bind[SingletonInterface](genjector.AsPointer[SingletonInterface, *SingletonStruct]())
 		if err != nil {
 			t.Error("binding should not cause an error")
 		}

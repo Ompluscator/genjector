@@ -1,8 +1,9 @@
 package examples
 
 import (
-	"github.com/ompluscator/genjector"
 	"testing"
+
+	"github.com/ompluscator/genjector"
 )
 
 type PointerInterface interface {
@@ -25,7 +26,7 @@ func TestAsPointer(t *testing.T) {
 	t.Run("Bind a pointer to a struct as an implementation for an interface", func(t *testing.T) {
 		genjector.Clean()
 
-		err := genjector.Bind(genjector.AsPointer[PointerInterface, *PointerStruct]())
+		err := genjector.Bind[PointerInterface](genjector.AsPointer[PointerInterface, *PointerStruct]())
 		if err != nil {
 			t.Error("binding should not cause an error")
 		}
@@ -44,7 +45,7 @@ func TestAsPointer(t *testing.T) {
 	t.Run("Bind a pointer to a struct as an implementation for the pointer of that struct", func(t *testing.T) {
 		genjector.Clean()
 
-		err := genjector.Bind(genjector.AsPointer[*PointerStruct, *PointerStruct]())
+		err := genjector.Bind[PointerStruct](genjector.AsPointer[*PointerStruct, *PointerStruct]())
 		if err != nil {
 			t.Error("binding should not cause an error")
 		}

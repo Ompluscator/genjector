@@ -122,7 +122,7 @@ func Bind[T any](source BindingSource[T], options ...BindingOption) error {
 //
 // Still, in case of error, it panics.
 func MustBind[T any](source BindingSource[T], options ...BindingOption) {
-	err := Bind(source, options...)
+	err := Bind[T](source, options...)
 	if err != nil {
 		panic(err)
 	}

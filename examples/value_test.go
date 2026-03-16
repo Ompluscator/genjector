@@ -1,8 +1,9 @@
 package examples
 
 import (
-	"github.com/ompluscator/genjector"
 	"testing"
+
+	"github.com/ompluscator/genjector"
 )
 
 type ValueInterface interface {
@@ -25,7 +26,7 @@ func TestAsValue(t *testing.T) {
 	t.Run("Bind a struct as an implementation for an interface", func(t *testing.T) {
 		genjector.Clean()
 
-		err := genjector.Bind(genjector.AsValue[ValueInterface, ValueStruct]())
+		err := genjector.Bind[ValueInterface](genjector.AsValue[ValueInterface, ValueStruct]())
 		if err != nil {
 			t.Error("binding should not cause an error")
 		}
@@ -44,7 +45,7 @@ func TestAsValue(t *testing.T) {
 	t.Run("Bind a struct as an implementation for that struct", func(t *testing.T) {
 		genjector.Clean()
 
-		err := genjector.Bind(genjector.AsValue[ValueStruct, ValueStruct]())
+		err := genjector.Bind[ValueInterface](genjector.AsValue[ValueStruct, ValueStruct]())
 		if err != nil {
 			t.Error("binding should not cause an error")
 		}

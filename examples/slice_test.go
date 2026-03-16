@@ -1,8 +1,9 @@
 package examples
 
 import (
-	"github.com/ompluscator/genjector"
 	"testing"
+
+	"github.com/ompluscator/genjector"
 )
 
 type SliceInterface interface {
@@ -25,15 +26,15 @@ func TestAsSlice(t *testing.T) {
 	t.Run("Bind multiple pointers to a struct as an implementations for an interface", func(t *testing.T) {
 		genjector.Clean()
 
-		err := genjector.Bind(
-			genjector.InSlice(genjector.AsPointer[SliceInterface, *SliceStruct]()),
+		err := genjector.Bind[SingletonInterface](
+			genjector.InSlice[SliceInterface](genjector.AsPointer[SliceInterface, *SliceStruct]()),
 		)
 		if err != nil {
 			t.Error("binding should not cause an error")
 		}
 
-		err = genjector.Bind(
-			genjector.InSlice(genjector.AsProvider[SliceInterface](func() (*SliceStruct, error) {
+		err = genjector.Bind[SingletonInterface](
+			genjector.InSlice[SliceInterface](genjector.AsProvider[SliceInterface](func() (*SliceStruct, error) {
 				return &SliceStruct{
 					value: "value provided inside the ProviderMethod",
 				}, nil
@@ -43,8 +44,8 @@ func TestAsSlice(t *testing.T) {
 			t.Error("binding should not cause an error")
 		}
 
-		err = genjector.Bind(
-			genjector.InSlice(genjector.AsInstance[SliceInterface](&SliceStruct{
+		err = genjector.Bind[SliceInterface](
+			genjector.InSlice[SliceInterface](genjector.AsInstance[SliceInterface](&SliceStruct{
 				value: "value provided inside the Test method",
 			})),
 		)

@@ -82,7 +82,7 @@ func (s *Service) String() string {
   return s.value
 }
 
-err := genjector.Bind(genjector.AsPointer[ServiceInterface, *Service]())
+err := genjector.Bind[ServiceInterface](genjector.AsPointer[ServiceInterface, *Service]())
 if err != nil {
   return err
 }
@@ -118,7 +118,7 @@ func (s *Service) String() string {
   return s.value
 }
 
-err := genjector.Bind(
+err := genjector.Bind[ServiceInterface](
   genjector.AsPointer[ServiceInterface, *Service](),
   genjector.AsSingleton(),
   genjector.WithAnnotation("service")

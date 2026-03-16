@@ -2,8 +2,9 @@ package examples
 
 import (
 	"fmt"
-	"github.com/ompluscator/genjector"
 	"testing"
+
+	"github.com/ompluscator/genjector"
 )
 
 type AnnotationInterface interface {
@@ -36,12 +37,12 @@ func TestAsAnnotation(t *testing.T) {
 	t.Run("Take values from inner 2 child objects defined with proper annotation", func(t *testing.T) {
 		genjector.Clean()
 
-		err := genjector.Bind(genjector.AsPointer[AnnotationInterface, *AnnotationStruct]())
+		err := genjector.Bind[AnnotationInterface](genjector.AsPointer[AnnotationInterface, *AnnotationStruct]())
 		if err != nil {
 			t.Error("binding should not cause an error")
 		}
 
-		err = genjector.Bind(genjector.AsProvider[*AnnotationChildStruct](func() (*AnnotationChildStruct, error) {
+		err = genjector.Bind[AnnotationChildStruct](genjector.AsProvider[*AnnotationChildStruct](func() (*AnnotationChildStruct, error) {
 			return &AnnotationChildStruct{
 				value: "value from the first child",
 			}, nil
@@ -50,7 +51,7 @@ func TestAsAnnotation(t *testing.T) {
 			t.Error("binding should not cause an error")
 		}
 
-		err = genjector.Bind(genjector.AsProvider[*AnnotationChildStruct](func() (*AnnotationChildStruct, error) {
+		err = genjector.Bind[AnnotationChildStruct](genjector.AsProvider[*AnnotationChildStruct](func() (*AnnotationChildStruct, error) {
 			return &AnnotationChildStruct{
 				value: "value from the second child",
 			}, nil
